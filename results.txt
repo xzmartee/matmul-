@@ -1,0 +1,10 @@
+Attempt
+---------
+To change loop order from ijk to jik and ikj to see if that would change anything.
+
+Intuition
+---------
+
+Results
+---------
+ijk still proved to be the fastest.
