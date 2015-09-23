@@ -1,0 +1,57 @@
+Review for Group 13's initial report of Homework 1
+
+by Xiangyu Zhang (xz388) and Sijia Ma (sm2462)
+
+- Comments for each section:
+
+	1. Introduction
+	
+	We agree that in our assignment setup, the memory bandwidth has the greatest impact
+	on the overall performance. The authors' approaches seemed reasonable, though it might
+	allow better performance if multiple strategies are employed at the same time. For
+	instance, by optimizing the size of blocks one can make full use of the cache, while 
+	doing the matrix-matrix multiplication in individual blocks, changing the loop order
+	might make a difference.
+	
+	5 GFLOPs/sec seems to be a agreeable performance.
+	
+	2. Optimizations
+	
+	2.1 Loop Order
+	The result from this section is not surprising. Simply varying the loop order makes 
+	little sense in our setup. Since C stores 2-D array in a column major format, putting
+	j in the outmost loop presumably allow less memory accesses, but it won't enhance the
+	overall performance by too much.
+	
+	2.2 Blocking
+	We were wondering what block sizes the authors used in this section. We were not 
+	surprised to see underwhelming results from blocking strategy, but we do believe
+	the block size matters.
+	
+	2.3 Compiler Optimization
+	We definitely agree that -O3 is the most accepted optimization level, however we were
+	interested to see if there are any difference between gcc and icc.
+	
+	2.4 Block Indexing
+	We believe the copy optimization works well in our setup. Doing the transpose takes 
+	another O(N^2) operations (but not FLOPs), which should be negligible compared to the
+	computational task of matrix-matrix multiplication.
+	The obtained 5 GFLOPs/sec is a reasonable number.
+	
+- Positives
+
+	The authors tried a couple of reasonable approaches, and one of them received fairly
+	good results. Also it came to our notice that in the -O0 level compiler optimization,
+	the MKL algorithm also behaved poorly and showed a few peaks. This observation agrees
+	with what we have discussed in lectures, and is a good way of verifying what we have
+	learned.
+	
+- Suggestions
+
+	The authors mentioned in their next step approaches that they are going to tune the
+	block size to best fit L2/L3 cache. We believe this is absolutely a good idea and 
+	should be executed. Also we would suggest the authors include a few equations demon-
+	strating how they found N = 16 fits the L1 cache. There are a few ways to think about
+	this, each resulting in a different result, and we are quite curious about other 
+	groups' logic.
+	
