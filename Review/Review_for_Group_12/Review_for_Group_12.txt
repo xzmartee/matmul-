@@ -1,0 +1,42 @@
+Review for Group 12's initial report of Homework 1
+
+by Xiangyu Zhang (xz388) and Sijia Ma (sm2462)
+
+- Comments for each section
+
+	2.1 Loop reordering
+	The result is not surprising, as simply varying the loop order doesn't significantly
+	reduce the memory accesses. We suggest that consider combining this strategy with 
+	other approaches. The loop ordering in the kernel loops could be more significant 
+	than the outside ones, and finding a reasonable loop order for computing matrices in
+	the L1 cache might have an impact on the overall performance.
+	
+	2.2 & 2.3 Copy optimization and with Transpose
+	We believe the copy optimization works well in our setup. Doing the transpose takes 
+	another O(N^2) operations (but not FLOPs), which should be negligible compared to the
+	computational task of matrix-matrix multiplication.
+	The obtained ~8 GFLOPs/sec is a reasonable number, but could be enhanced.
+	
+	2.4 Compiler Flags
+	Our group haven't tried different compiler flags, but good to know.
+	
+	2.5 Hierarchical Blocking
+	Dividing the matrix into blocks that fit in different level caches is a reasonable 
+	approach. However we couldn't really follow the number that the authors claimed in 
+	the table. For the 15MB L3-cache, using the formula above the table, the largest 
+	size that may fit in could be around 800. We suggest the authors double check their 
+	numbers.
+	
+- Positives:
+
+	The authors made a couple of convincing attempts and received quite agreeable results.
+	Also finding references to help tune the compiler optimization is a big plus. The 
+	logic between attempts are quite clear, and combining multiple strategies/making 
+	modification based on an optimized model is a good way to solve the problem.
+	
+- Suggestions:
+
+	This submission is quite thorough and covered most widely accepted strategies. Our 
+	only concern is the numbers in hierarchical blocking, although this might not make a
+	huge difference in the overall performance.
+	 
