@@ -1,0 +1,38 @@
+==========================================================================
+ Review from Group 8
+==========================================================================
+
+1. Strengths
+
+* Good mathematical analysis of ideal block sizes for exploiting cache
+  locality. This offers a more reasoned way of choosing block sizes
+  instead of simply sweeping the design space.
+
+2. Potential Improvements
+
+* I'm not sure if the proposed loop ordering would work. Even if you
+  consider the first iteration of the loop where (i,j)=(0,0), you end up
+  storing the result of A_01 * B_10 to C_10, which should never happen.
+  It seems you are accumulating partial products for C_ij but storing it
+  to C_kj.
+
+* You might want to consider the memory access pattern in your analysis
+  of fitting working sets into caches. It's not necessarily true that
+  you're going to need the entire block's worth of data for all three
+  matrices for computing the output for that block. For instance, in the
+  naive loop ordering, we only need one cache line each for B and C,
+  while we traverse the current row of A, which will bring in a new cache
+  line for every element (at least at first). So if the working set of
+  the row traversal in A fits in L1, then decreasing the block size
+  probably will not have much impact.
+
+3. Additional Comments
+
+* The reason a block size of 96 might not be performing as well as you
+  expect might be due to cache conflicts. Since the L1 cache is 8-way set
+  associative and you are assuming 64KB (the data sheet shows 32KB, you
+  might want to double-check this), then with 64B lines we have 1024/8 =
+  128 sets. If the matrix size is such that a single column spans 128
+  lines, then the cache lines brought in by traversal a given row will
+  always map to the same set, causing conflict misses when you wrap
+  around to the next row. Maybe that is a part of what is happening?
